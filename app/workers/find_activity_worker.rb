@@ -10,17 +10,20 @@ class FindActivityWorker
 
     activities = res.parsed_response
 
-    found = activities.map do |a|
+    created = []
+
+    activities.each do |a|
       type = a.fetch('type')
       uid  = a.fetch('id')
-      { 'type' => type.downcase, 'uid' => uid } if type =~ /run/i
-    end.compact
 
-    found.each do |r|
-      UserActivity.where(activity_type: r['type'], uid: r['uid']).first_or_create!
+      next unless type =~ /run/i
+
+      res = CreateUserActivity.call(uid: uid, raw_data: a)
+      activity = res.value!
+      created << activity.uid
     end
 
-    found
+    created
   end
 
   private

@@ -16,7 +16,7 @@ RSpec.describe FindActivityWorker do
     end
 
     context 'when strava api request returns success' do
-      it 'creates UserActivity' do
+      it 'calls CreateUserActivity for each run activity' do
         expected = [
           { 'type' => 'Run', 'id' => '100' },
           { 'type' => 'Hike', 'id' => '101' },
@@ -25,20 +25,16 @@ RSpec.describe FindActivityWorker do
         stub_request(:get, %r{https://www.strava.com/api/v3/athlete/activities\?after=\d+})
           .to_return(status: 200, body: expected.to_json)
 
-        expect(UserActivity.count).to eq(0)
+        expect(CreateUserActivity).to receive(:call)
+          .with(uid: '100', raw_data: { 'type' => 'Run', 'id' => '100' })
+          .and_call_original
+
+        expect(CreateUserActivity).to receive(:call)
+          .with(uid: '102', raw_data: { 'type' => 'run', 'id' => '102' })
+          .and_call_original
 
         res = subject.perform
-
-        a1 = UserActivity.first
-        a2 = UserActivity.last
-
-        aggregate_failures 'user activity attributes' do
-          expect(UserActivity.count).to eq(2)
-          expect(a1.activity_type).to eq('run')
-          expect(a1.uid).to eq('100')
-          expect(a2.activity_type).to eq('run')
-          expect(a2.uid).to eq('102')
-        end
+        expect(res).to eq(%w(100 102))
       end
     end
   end
