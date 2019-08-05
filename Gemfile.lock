@@ -64,6 +64,7 @@ GEM
     builder (3.2.3)
     byebug (11.0.1)
     concurrent-ruby (1.1.5)
+    connection_pool (2.2.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
@@ -119,6 +120,8 @@ GEM
     public_suffix (3.1.1)
     puma (3.12.1)
     rack (2.0.7)
+    rack-protection (2.0.5)
+      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.0.rc2)
@@ -151,6 +154,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    redis (4.1.2)
     rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
@@ -172,6 +176,11 @@ GEM
     safe_yaml (1.0.5)
     shoulda-matchers (4.1.2)
       activesupport (>= 4.2.0)
+    sidekiq (5.2.7)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack (>= 1.5.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
     simplecov (0.17.0)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -218,8 +227,8 @@ DEPENDENCIES
   rails (~> 6.0.0.rc2)
   rspec-rails (~> 3.8)
   shoulda-matchers
+  sidekiq (~> 5.2)
   simplecov
-  spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
   webmock
