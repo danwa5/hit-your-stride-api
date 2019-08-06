@@ -7,7 +7,7 @@ RSpec.describe FindActivityWorker do
     context 'when strava api request returns failure' do
       it 'raises exception' do
         res = double('', success?: false, code: 401, to_s: 'exception message')
-        expect(Api::Strava).to receive(:get_activities_list).and_return(res)
+        expect(Api::Strava).to receive(:get_activities).and_return(res)
 
         expect {
           subject.perform

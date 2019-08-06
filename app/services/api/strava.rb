@@ -10,13 +10,14 @@ class Api::Strava
       new.get_profile
     end
 
-    def get_activities_list(options = {})
+    def get_activities(options = {})
       if options[:date].present?
         options[:epoch] = DateTime.parse("#{options[:date]} 00:00:00 PST").to_i
       else
         options[:epoch] = 1.week.ago.to_i
       end
-      new(options).get_activities_list
+
+      new(options).get_activities
     end
 
     def get_activity(options = {})
@@ -35,8 +36,11 @@ class Api::Strava
   end
 
   # GET https://www.strava.com/api/v3/athlete/activities
-  def get_activities_list
-    self.class.get("/v3/athlete/activities", query: { after: @options[:epoch] }, headers: headers)
+  def get_activities
+    params = { after: @options[:epoch] }
+    params[:per_page] = @options[:per_page] if @options[:per_page].present?
+
+    self.class.get("/v3/athlete/activities", query: params, headers: headers)
   end
 
   # GET https://www.strava.com/api/v3/activities/:id

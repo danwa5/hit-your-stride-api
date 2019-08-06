@@ -4,7 +4,7 @@ class FindActivityWorker
   def perform(date = nil)
     @date = date
 
-    res = Api::Strava.get_activities_list(options)
+    res = Api::Strava.get_activities(options)
 
     raise "#{res.code}: #{res.to_s}" unless res.success?
 

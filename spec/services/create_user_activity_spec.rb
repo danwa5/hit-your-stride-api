@@ -22,11 +22,11 @@ RSpec.describe CreateUserActivity do
       }
     end
 
-    context 'when activity already exists' do
+    context 'when activity already exists but has not processed' do
       before do
         create(:user_activity, uid: @uid, city: 'Oakland')
       end
-      it 'updates User Activity' do
+      it 'updates UserActivity' do
         expect(UserActivity.count).to eq(1)
 
         res = described_class.call(uid: @uid, raw_data: @raw_data)
@@ -36,6 +36,38 @@ RSpec.describe CreateUserActivity do
         expect(res).to be_success
         expect(UserActivity.count).to eq(1)
         expect(activity.city).to eq('San Francisco')
+        expect(activity.state).to eq('processed')
+      end
+    end
+
+    context 'when activity has been processed' do
+      before do
+        create(:user_activity, :processed, uid: @uid, city: 'Portland')
+      end
+      it 'does not update UserActivity' do
+        expect(UserActivity.count).to eq(1)
+
+        res = described_class.call(uid: @uid, raw_data: @raw_data)
+
+        activity = UserActivity.last
+
+        expect(res).to be_success
+        expect(UserActivity.count).to eq(1)
+        expect(activity.city).to eq('Portland')
+        expect(activity.state).to eq('processed')
+      end
+    end
+
+    context 'when activity processing fails' do
+      it 'marks UserActivity as failure' do
+        allow_any_instance_of(UserActivity).to receive(:update!).and_raise
+
+        res = described_class.call(uid: @uid, raw_data: @raw_data)
+
+        activity = UserActivity.last
+
+        expect(UserActivity.count).to eq(1)
+        expect(activity.state).to eq('failure')
       end
     end
 
@@ -61,6 +93,7 @@ RSpec.describe CreateUserActivity do
         expect(activity.start_date_utc).to eq('2019-08-01T02:03:04')
         expect(activity.start_date_local).to eq('2019-07-31T20:21:22')
         expect(activity.raw_data).to eq(@raw_data)
+        expect(activity.state).to eq('processed')
       end
     end
   end

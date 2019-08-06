@@ -10,8 +10,17 @@ class CreateUserActivity
       activity = nil
 
       ActiveRecord::Base.transaction do
-        activity = UserActivity.where(uid: uid, activity_type: activity_type).first_or_create!
-        activity.update!(activity_attrs)
+        activity = UserActivity.where(uid: uid, activity_type: activity_type).first_or_initialize
+
+        unless activity.processed?
+          begin
+            activity.processing!
+            activity.update!(activity_attrs)
+            activity.processed!
+          rescue
+            activity.failure!
+          end
+        end
       end
 
       activity

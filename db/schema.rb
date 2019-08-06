@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_04_203429) do
+ActiveRecord::Schema.define(version: 2019_08_06_220548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "user_activities", force: :cascade do |t|
-    t.string "activity_type"
+    t.string "activity_type", null: false
     t.string "uid", null: false
     t.datetime "start_date_utc"
     t.datetime "end_date_utc"
     t.datetime "start_date_local"
     t.datetime "end_date_local"
-    t.decimal "distance", precision: 8, scale: 2
+    t.decimal "distance", precision: 10, scale: 2
     t.integer "moving_time"
     t.integer "elapsed_time"
     t.string "city"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2019_08_04_203429) do
     t.string "checksum"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "state"
   end
 
 end

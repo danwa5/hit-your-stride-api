@@ -20,11 +20,11 @@ RSpec.describe Api::Strava do
     end
   end
 
-  describe '.get_activities_list' do
+  describe '.get_activities' do
     it 'makes a request to strava api and returns an array of activities' do
       stub_req = stub_request(:get, %r{https://www.strava.com/api/v3/athlete/activities\?after=\d+}).to_return(status: 200)
 
-      response = described_class.get_activities_list
+      response = described_class.get_activities
 
       expect(stub_req).to have_been_made
       expect(response.class).to eq(HTTParty::Response)
