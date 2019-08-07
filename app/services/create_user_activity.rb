@@ -14,7 +14,7 @@ class CreateUserActivity
 
         unless activity.processed?
           begin
-            # Try updating from existing data if data is not passed in as argument
+            # try updating from existing data if data is not passed in as argument
             @raw_data = activity.raw_data if @raw_data.blank? && activity.persisted?
 
             activity.processing!
@@ -63,23 +63,44 @@ class CreateUserActivity
     raw_data.fetch('elapsed_time', nil)
   end
 
-  def city
-    raw_data.fetch('location_city', nil)
-  end
-
-  def state_province
-    raw_data.fetch('location_state', nil)
-  end
-
-  def country
-    raw_data.fetch('location_country', nil)
-  end
-
   def start_date_utc
     raw_data.fetch('start_date', nil)
   end
 
   def start_date_local
     raw_data.fetch('start_date_local', nil)
+  end
+
+  # geolocation-related
+  def location
+    @location ||= begin
+      return {} unless latitude.present? && longitude.present?
+
+      g = Geocoder.search([latitude, longitude]).first
+      g.data['address']
+    rescue
+      {}
+    end
+  end
+
+  def latitude
+    raw_data.fetch('start_latitude', nil)
+  end
+
+  def longitude
+    raw_data.fetch('start_longitude', nil)
+  end
+
+  def city
+    c = location.fetch('city', nil)
+    location.fetch('town', nil) if c.nil?
+  end
+
+  def state_province
+    location.fetch('state', nil)
+  end
+
+  def country
+    location.fetch('country', nil)
   end
 end
