@@ -40,6 +40,24 @@ RSpec.describe CreateUserActivity do
       end
     end
 
+    context 'when activity already exists and raw_data arg is blank' do
+      before do
+        create(:user_activity, uid: @uid, city: 'Seattle', raw_data: @raw_data)
+      end
+      it 'updates UserActivity' do
+        expect(UserActivity.count).to eq(1)
+
+        res = described_class.call(uid: @uid, raw_data: nil)
+
+        activity = UserActivity.find_by(uid: @uid)
+
+        expect(res).to be_success
+        expect(UserActivity.count).to eq(1)
+        expect(activity.city).to eq('San Francisco')
+        expect(activity.state).to eq('processed')
+      end
+    end
+
     context 'when activity has been processed' do
       before do
         create(:user_activity, :processed, uid: @uid, city: 'Portland')

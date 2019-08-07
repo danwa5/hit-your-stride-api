@@ -10,10 +10,13 @@ class CreateUserActivity
       activity = nil
 
       ActiveRecord::Base.transaction do
-        activity = UserActivity.where(uid: uid, activity_type: activity_type).first_or_initialize
+        activity = UserActivity.where(uid: uid).first_or_initialize
 
         unless activity.processed?
           begin
+            # Try updating from existing data if data is not passed in as argument
+            @raw_data = activity.raw_data if @raw_data.blank? && activity.persisted?
+
             activity.processing!
             activity.update!(activity_attrs)
             activity.processed!
@@ -31,6 +34,7 @@ class CreateUserActivity
 
   def activity_attrs
     {
+      activity_type: activity_type,
       city: city,
       country: country,
       distance: distance,
