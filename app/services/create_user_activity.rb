@@ -93,7 +93,8 @@ class CreateUserActivity
 
   def city
     c = location.fetch('city', nil)
-    location.fetch('town', nil) if c.nil?
+    c = location.fetch('town', nil) if c.nil?
+    c
   end
 
   def state_province
