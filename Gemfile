@@ -28,11 +28,10 @@ gem 'dry-transaction'
 gem 'fast_jsonapi'
 gem 'geocoder'
 gem 'httparty'
+gem 'rack-cors'
 gem 'sidekiq', '~> 5.2'
 gem 'state_machines-activerecord'
 
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
 
 group :development, :test do
   gem 'awesome_print'
