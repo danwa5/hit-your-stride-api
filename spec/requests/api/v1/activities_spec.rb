@@ -11,7 +11,7 @@ RSpec.describe 'Activities', type: :request do
       json = JSON.parse(response.body)
 
       expect(response.status).to eq(200)
-      expect(json.size).to eq(3)
+      expect(json['results'].size).to eq(3)
     end
   end
 end
