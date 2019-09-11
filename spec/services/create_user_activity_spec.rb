@@ -149,12 +149,54 @@ RSpec.describe CreateUserActivity do
         expect(activity.moving_time).to eq(1000)
         expect(activity.elapsed_time).to eq(1001)
         expect(activity.city).to eq('San Francisco')
-        expect(activity.state_province).to eq('California')
+        expect(activity.state_province).to eq('CA')
         expect(activity.country).to eq('United States')
         expect(activity.start_date_utc).to eq('2019-08-01T02:03:04')
         expect(activity.start_date_local).to eq('2019-07-31T20:21:22')
         expect(activity.raw_data).to eq(@raw_data)
         expect(activity.state).to eq('processed')
+      end
+    end
+  end
+
+  describe '#state_province' do
+    context 'when state is "NY"' do
+      it 'returns "NY"' do
+        allow(subject).to receive(:location).and_return({ 'state' => 'NY' })
+        expect(subject.send(:state_province)).to eq('NY')
+      end
+    end
+    context 'when state is "New York"' do
+      it 'returns "NY"' do
+        allow(subject).to receive(:location).and_return({ 'state' => 'New York' })
+        expect(subject.send(:state_province)).to eq('NY')
+      end
+    end
+    context 'when state is "NEW YORK"' do
+      it 'returns "NEW YORK"' do
+        allow(subject).to receive(:location).and_return({ 'state' => 'NEW YORK' })
+        expect(subject.send(:state_province)).to eq('NEW YORK')
+      end
+    end
+  end
+
+  describe '#country' do
+    context 'when country is "United States"' do
+      it 'returns "United States"' do
+        allow(subject).to receive(:location).and_return({ 'country' => 'United States' })
+        expect(subject.send(:country)).to eq('United States')
+      end
+    end
+    context 'when country is "USA"' do
+      it 'returns "United States"' do
+        allow(subject).to receive(:location).and_return({ 'country' => 'USA' })
+        expect(subject.send(:country)).to eq('United States')
+      end
+    end
+    context 'when state is "United States of America"' do
+      it 'returns "United States"' do
+        allow(subject).to receive(:location).and_return({ 'country' => 'United States of America' })
+        expect(subject.send(:country)).to eq('United States')
       end
     end
   end

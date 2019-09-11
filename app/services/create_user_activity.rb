@@ -1,4 +1,7 @@
+require 'state_codes'
+
 class CreateUserActivity
+  include StateCodes
   include Services::BaseService
   extend Dry::Initializer
 
@@ -92,16 +95,26 @@ class CreateUserActivity
   end
 
   def city
-    c = location.fetch('city', nil)
-    c = location.fetch('town', nil) if c.nil?
-    c
+    city = location.fetch('city', nil)
+    town = location.fetch('town', nil)
+    city || town
   end
 
   def state_province
-    location.fetch('state', nil)
+    state = location.fetch('state', nil)
+    return state if state.to_s.length == 2
+
+    state_codes.fetch(state, state)
   end
 
   def country
-    location.fetch('country', nil)
+    h = {
+      'United States of America' => 'United States',
+      'USA' => 'United States'
+    }
+
+    country = location.fetch('country', nil)
+
+    h.fetch(country, country)
   end
 end
