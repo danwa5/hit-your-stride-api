@@ -4,7 +4,7 @@ module Api
 
       # GET /api/v1/activities
       def index
-        fields = %w(id uid activity_type distance moving_time elapsed_time city state_province country start_date_local)
+        fields = %w(id uid activity_type distance moving_time elapsed_time city state_province country start_date_local layoff)
         activities = UserActivity.all.select(fields).order('start_date_local DESC')
 
         pagy, records = pagy(activities, page: page_param)

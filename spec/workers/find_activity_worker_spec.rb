@@ -33,6 +33,8 @@ RSpec.describe FindActivityWorker do
           .with(uid: '102', raw_data: { 'type' => 'run', 'id' => '102' })
           .and_call_original
 
+        expect(CalculateLayoffWorker).to receive(:perform_async).once
+
         res = subject.perform
         expect(res).to eq(%w(100 102))
       end

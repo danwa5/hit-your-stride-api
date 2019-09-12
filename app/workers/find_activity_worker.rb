@@ -23,6 +23,8 @@ class FindActivityWorker
       created << activity.uid
     end
 
+    CalculateLayoffWorker.perform_async if created.any?
+
     created
   end
 
