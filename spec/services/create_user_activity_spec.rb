@@ -193,7 +193,7 @@ RSpec.describe CreateUserActivity do
         expect(subject.send(:country)).to eq('United States')
       end
     end
-    context 'when state is "United States of America"' do
+    context 'when country is "United States of America"' do
       it 'returns "United States"' do
         allow(subject).to receive(:location).and_return({ 'country' => 'United States of America' })
         expect(subject.send(:country)).to eq('United States')
