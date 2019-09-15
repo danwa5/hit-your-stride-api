@@ -18,7 +18,7 @@ module Api
       end
 
       def page_param
-        p = params[:page].to_i
+        p = search_params[:page].to_i
         p >= 1 ? p : 1
       end
     end

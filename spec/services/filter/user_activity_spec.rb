@@ -35,5 +35,12 @@ RSpec.describe Filter::UserActivity do
         expect(res).to be_empty
       end
     end
+
+    context 'when search param is empty' do
+      it 'returns all' do
+        res = described_class.call({ city: '' })
+        expect(res).to contain_exactly(@a1, @a2, @a3)
+      end
+    end
   end
 end

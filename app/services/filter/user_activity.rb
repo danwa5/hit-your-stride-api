@@ -1,8 +1,11 @@
 module Filter
   class UserActivity
     def self.call(options)
-      new(options).filter
+      options = options.keep_if { |_, val| val.present? }
+      new(options).send(:filter)
     end
+
+    private
 
     def initialize(options)
       @options = options
