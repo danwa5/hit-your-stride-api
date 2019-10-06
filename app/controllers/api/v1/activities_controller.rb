@@ -1,6 +1,7 @@
 module Api
   module V1
     class ActivitiesController < ApplicationController
+      before_action :transform_keys, only: [:index]
 
       # GET /api/v1/activities
       def index
@@ -9,12 +10,18 @@ module Api
         serializer = UserActivitySerializer.new(records).serializable_hash
 
         render json: { results: serializer[:data], pagy: pagy_metadata(pagy) }, status: :ok
+      rescue Exception => e
+        render json: { errors: [ { title: e.class.to_s, code: '400', detail: e.message } ] }, status: :bad_request
       end
 
       private
 
+      def transform_keys
+        params.transform_keys! { |key| key.tr('-', '_') }
+      end
+
       def search_params
-        params.permit(:page, :city, :country)
+        params.permit(:page, :city, :country, :distance_min, :distance_max)
       end
 
       def page_param

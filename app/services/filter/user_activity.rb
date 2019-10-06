@@ -16,11 +16,20 @@ module Filter
       resource = ::UserActivity.select(fields)
 
       if @options[:city]
-        resource = resource.where('city ilike ?', @options[:city])
+        resource = resource.where('city ilike ?', "#{@options[:city]}%")
       end
 
       if @options[:country]
-        resource = resource.where('country ilike ?', @options[:country])
+        resource = resource.where('country ilike ?', "#{@options[:country]}%")
+      end
+
+      if @options[:distance_min] || @options[:distance_max]
+        if @options[:distance_min]
+          resource = resource.where('distance >= ?', @options[:distance_min])
+        end
+        if @options[:distance_max]
+          resource = resource.where('distance <= ?', @options[:distance_max])
+        end
       end
 
       resource.order(start_date_local: :desc)
