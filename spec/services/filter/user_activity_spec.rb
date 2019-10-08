@@ -3,10 +3,37 @@ require 'rails_helper'
 RSpec.describe Filter::UserActivity do
   describe '.call' do
     before do
-      @a1 = create(:user_activity, city: 'San Francisco', country: 'United States', distance: 5.00)
-      @a2 = create(:user_activity, city: 'Toronto', country: 'Canada', distance: 5.01)
-      @a3 = create(:user_activity, city: 'Los Angeles', country: 'United States', distance: 10.00)
-      @a4 = create(:user_activity, city: 'New York', country: 'United States', distance: 9.90)
+      @a1 = create(:user_activity,
+              city: 'San Francisco',
+              country: 'United States',
+              distance: 5.00,
+              layoff: nil,
+              moving_time: 1
+            )
+
+      @a2 = create(:user_activity,
+              city: 'Toronto',
+              country: 'Canada',
+              distance: 5.01,
+              layoff: 1,
+              moving_time: 2
+            )
+
+      @a3 = create(:user_activity,
+              city: 'Los Angeles',
+              country: 'United States',
+              distance: 10.00,
+              layoff: 1,
+              moving_time: 3
+            )
+
+      @a4 = create(:user_activity,
+              city: 'New York',
+              country: 'United States',
+              distance: 9.90,
+              layoff: 2,
+              moving_time: nil
+            )
     end
 
     context 'when there are no search params' do
@@ -64,6 +91,36 @@ RSpec.describe Filter::UserActivity do
           res = described_class.call({ distance_min: 10, distance_max: 1 })
           expect(res).to be_empty
         end
+      end
+    end
+
+    context 'when searching by duration' do
+      it 'given min duration' do
+        res = described_class.call({ duration_min: 2 })
+        expect(res).to contain_exactly(@a2, @a3)
+      end
+      it 'given max duration' do
+        res = described_class.call({ duration_max: 2 })
+        expect(res).to contain_exactly(@a1, @a2)
+      end
+      it 'given both min and max duration' do
+        res = described_class.call({ duration_min: 1, duration_max: 5 })
+        expect(res).to contain_exactly(@a1, @a2, @a3)
+      end
+    end
+
+    context 'when searching by layoff' do
+      it 'given min layoff' do
+        res = described_class.call({ layoff_min: 0 })
+        expect(res).to contain_exactly(@a2, @a3, @a4)
+      end
+      it 'given max layoff' do
+        res = described_class.call({ layoff_max: 1 })
+        expect(res).to contain_exactly(@a2, @a3)
+      end
+      it 'given both min and max layoff' do
+        res = described_class.call({ layoff_min: 0, layoff_max: 1 })
+        expect(res).to contain_exactly(@a2, @a3)
       end
     end
   end
