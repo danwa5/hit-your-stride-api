@@ -42,6 +42,7 @@ class CreateUserActivity
       country: country,
       distance: distance,
       elapsed_time: elapsed_time,
+      mile_pace: mile_pace,
       moving_time: moving_time,
       state_province: state_province,
       start_date_utc: start_date_utc,
@@ -54,14 +55,26 @@ class CreateUserActivity
     raw_data.fetch('type', '').downcase
   end
 
+  # @type [Decimal] - meters
   def distance
     raw_data.fetch('distance', nil)
   end
 
+  # @type [Integer] - seconds / mile
+  def mile_pace
+    min_per_mile = moving_time / (distance * 60 * 0.00062137)
+    whole_minutes = min_per_mile.floor
+    fractional_minutes = min_per_mile - whole_minutes
+    seconds = (60 * fractional_minutes).round
+    (whole_minutes * 60) + seconds
+  end
+
+  # @type [Integer] - seconds
   def moving_time
     raw_data.fetch('moving_time', nil)
   end
 
+  # @type [Integer] - seconds
   def elapsed_time
     raw_data.fetch('elapsed_time', nil)
   end

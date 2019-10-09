@@ -8,6 +8,7 @@ RSpec.describe Filter::UserActivity do
               country: 'United States',
               distance: 5.00,
               layoff: nil,
+              mile_pace: 100,
               moving_time: 1
             )
 
@@ -16,6 +17,7 @@ RSpec.describe Filter::UserActivity do
               country: 'Canada',
               distance: 5.01,
               layoff: 1,
+              mile_pace: 100,
               moving_time: 2
             )
 
@@ -24,6 +26,7 @@ RSpec.describe Filter::UserActivity do
               country: 'United States',
               distance: 10.00,
               layoff: 1,
+              mile_pace: 101,
               moving_time: 3
             )
 
@@ -32,6 +35,7 @@ RSpec.describe Filter::UserActivity do
               country: 'United States',
               distance: 9.90,
               layoff: 2,
+              mile_pace: 99,
               moving_time: nil
             )
     end
@@ -121,6 +125,13 @@ RSpec.describe Filter::UserActivity do
       it 'given both min and max layoff' do
         res = described_class.call({ layoff_min: 0, layoff_max: 1 })
         expect(res).to contain_exactly(@a2, @a3)
+      end
+    end
+
+    context 'when searching by mile pace' do
+      it 'returns 3' do
+        res = described_class.call({ mile_pace: 100 })
+        expect(res).to contain_exactly(@a1, @a2, @a4)
       end
     end
   end

@@ -12,7 +12,7 @@ module Filter
     end
 
     def filter
-      fields = %w(id uid activity_type distance moving_time elapsed_time city state_province country start_date_local layoff)
+      fields = %w(id uid activity_type distance moving_time elapsed_time mile_pace city state_province country start_date_local layoff)
       resource = ::UserActivity.select(fields)
 
       if @options[:city]
@@ -48,6 +48,10 @@ module Filter
         if @options[:layoff_max]
           resource = resource.where('layoff <= ?', @options[:layoff_max])
         end
+      end
+
+      if @options[:mile_pace]
+        resource = resource.where('mile_pace <= ?', @options[:mile_pace])
       end
 
       resource.order(start_date_local: :desc)
