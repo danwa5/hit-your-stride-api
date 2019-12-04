@@ -20,11 +20,6 @@ module Api
         params.transform_keys! { |key| key.tr('-', '_') }
       end
 
-      def search_params
-        params.permit(:page, :city, :country, :distance_min, :distance_max, :duration_min, :duration_max,
-                      :layoff_min, :layoff_max, :mile_pace)
-      end
-
       def page_param
         p = search_params[:page].to_i
         p >= 1 ? p : 1
