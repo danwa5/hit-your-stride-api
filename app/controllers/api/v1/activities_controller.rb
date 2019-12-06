@@ -6,7 +6,7 @@ module Api
       # GET /api/v1/activities
       def index
         activities = Filter::UserActivity.call(search_params)
-        pagy, records = pagy(activities, page: page_param)
+        pagy, records = pagy(activities, page: page_param, items: 10)
         serializer = UserActivitySerializer.new(records).serializable_hash
 
         render json: { results: serializer[:data], pagy: pagy_metadata(pagy) }, status: :ok
