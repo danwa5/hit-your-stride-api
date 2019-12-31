@@ -1,24 +1,22 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**HitYourStride API** is a back-end application that aggregates all your run data from Strava
 
-Things you may want to cover:
+## Development
 
-* Ruby version
+### Dependencies
 
-* System dependencies
+* Ruby 2.5.3
+* Bundler 2.0
+* Postgres 11.5
 
-* Configuration
+### Initialization
 
-* Database creation
+```shell
+$ gem install bundler
+$ bundle check || bundle install
+```
 
-* Database initialization
+### Configuration
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To get Strava access token, run `ruby bin/strava_oauth_token` and then copy and paste the token in the `.env`.
