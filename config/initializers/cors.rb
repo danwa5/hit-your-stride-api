@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins %r{\Ahttp://localhost:\d{4,5}\z}
+    origins %r{\Ahttp://localhost:\d{4,5}\z}, %r{\Ahttps://blooming-sierra-96410.herokuapp.com\z}
 
     resource '*',
       headers: :any,
