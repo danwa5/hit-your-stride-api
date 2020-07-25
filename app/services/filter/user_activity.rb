@@ -12,7 +12,7 @@ module Filter
     end
 
     def filter
-      fields = %w(id uid activity_type distance moving_time elapsed_time mile_pace city state_province country start_date_local layoff)
+      fields = %w(id uid activity_type distance moving_time elapsed_time mile_pace city state_province country start_date_local layoff raw_data)
       resource = ::UserActivity.select(fields)
 
       if @options[:city]

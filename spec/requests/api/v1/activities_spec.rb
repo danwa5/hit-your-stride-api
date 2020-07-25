@@ -22,7 +22,7 @@ RSpec.describe 'Activities', type: :request do
         a1 = create(:user_activity, city: 'San Francisco', country: 'United States')
         a2 = create(:user_activity, city: 'Toronto', country: 'Canada')
 
-        get '/api/v1/activities?city=toronto'
+        get '/api/v1/activities', params: { 'city' => 'toronto' }
 
         json = JSON.parse(response.body)
 
@@ -34,7 +34,7 @@ RSpec.describe 'Activities', type: :request do
 
     context 'when a permitted search param has an invalid value' do
       it 'returns status 400 (bad request)' do
-        get '/api/v1/activities?distance-min=abc'
+        get '/api/v1/activities', params: { 'distance-min' => 'abc' }
 
         expect(response.status).to eq(400)
       end

@@ -25,7 +25,7 @@ To get Strava access token, run `ruby bin/strava_oauth_token` and then copy and 
 
 1. While on master branch, make sure `public/` is empty.
 
-2. Navigate to front-end app and run `yarn run build`. This will generate folder named `dist`.
+2. Navigate to front-end app and run `yarn build`. This will generate folder named `dist`.
 
 3. Copy all the files in `dist` back to `public`.
 ```
