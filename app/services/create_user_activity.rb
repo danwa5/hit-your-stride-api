@@ -108,9 +108,7 @@ class CreateUserActivity
   end
 
   def city
-    city = location.fetch('city', nil)
-    town = location.fetch('town', nil)
-    city || town
+    location.fetch('city', nil) || location.fetch('town', nil) || location.fetch('village', nil)
   end
 
   def state_province
