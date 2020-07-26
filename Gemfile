@@ -4,11 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.5.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.1'
+gem 'rails', '~> 6.0.3'
 
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
+gem 'puma', '>= 3.12.4'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
@@ -26,7 +26,7 @@ gem 'dry-initializer', '~>2.3'
 gem 'dry-monads', '~> 1.0'
 gem 'dry-transaction'
 gem 'fast_jsonapi'
-gem 'geocoder'
+gem 'geocoder', ">= 1.6.1"
 gem 'httparty'
 gem 'pagy', '~> 3.5'
 gem 'rack-cors'
