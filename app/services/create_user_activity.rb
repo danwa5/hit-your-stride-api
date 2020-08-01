@@ -47,6 +47,8 @@ class CreateUserActivity
       state_province: state_province,
       start_date_utc: start_date_utc,
       start_date_local: start_date_local,
+      start_latlng: start_latlng,
+      end_latlng: end_latlng,
       raw_data: raw_data
     }
   end
@@ -87,24 +89,24 @@ class CreateUserActivity
     raw_data.fetch('start_date_local', nil)
   end
 
+  def start_latlng
+    raw_data.fetch('start_latlng', []).join(',').presence
+  end
+
+  def end_latlng
+    raw_data.fetch('end_latlng', []).join(',').presence
+  end
+
   # geolocation-related
   def location
     @location ||= begin
-      return {} unless latitude.present? && longitude.present?
+      return {} unless start_latlng.present?
 
-      g = Geocoder.search([latitude, longitude]).first
+      g = Geocoder.search(start_latlng).first
       g.data['address']
     rescue
       {}
     end
-  end
-
-  def latitude
-    raw_data.fetch('start_latitude', nil)
-  end
-
-  def longitude
-    raw_data.fetch('start_longitude', nil)
   end
 
   def city

@@ -16,8 +16,8 @@ RSpec.describe CreateUserActivity do
         "elapsed_time" => 1001,
         "start_date" => "2019-08-01T02:03:04Z",
         "start_date_local" => "2019-07-31T20:21:22Z",
-        "start_latitude" => 37.77,
-        "start_longitude" => -122.43
+        "start_latlng" => [37.77,-122.43],
+        "end_latlng" => [38.91,-123.45]
       }
       @geocoded = double(Geocoder::Result, data: {
         'address' => {
@@ -55,7 +55,7 @@ RSpec.describe CreateUserActivity do
         expect(UserActivity.count).to eq(1)
 
         expect(Geocoder).to receive(:search)
-          .with([@raw_data['start_latitude'], @raw_data['start_longitude']])
+          .with(@raw_data.fetch('start_latlng').join(','))
           .and_return([@geocoded])
 
         res = described_class.call(uid: @uid, raw_data: @raw_data)
@@ -77,7 +77,7 @@ RSpec.describe CreateUserActivity do
         expect(UserActivity.count).to eq(1)
 
         expect(Geocoder).to receive(:search)
-          .with([@raw_data['start_latitude'], @raw_data['start_longitude']])
+          .with(@raw_data.fetch('start_latlng').join(','))
           .and_return([@geocoded])
 
         res = described_class.call(uid: @uid, raw_data: nil)
@@ -94,7 +94,7 @@ RSpec.describe CreateUserActivity do
     context 'when activity processing fails' do
       it 'marks UserActivity as failure' do
         expect(Geocoder).to receive(:search)
-          .with([@raw_data['start_latitude'], @raw_data['start_longitude']])
+          .with(@raw_data.fetch('start_latlng').join(','))
           .and_return([@geocoded])
 
         allow_any_instance_of(UserActivity).to receive(:update!).and_raise
@@ -132,7 +132,7 @@ RSpec.describe CreateUserActivity do
       expect(UserActivity.count).to eq(0)
 
       expect(Geocoder).to receive(:search)
-        .with([@raw_data['start_latitude'], @raw_data['start_longitude']])
+        .with(@raw_data.fetch('start_latlng').join(','))
         .and_return([@geocoded])
 
       res = described_class.call(uid: @uid, raw_data: @raw_data)
@@ -154,6 +154,8 @@ RSpec.describe CreateUserActivity do
         expect(activity.country).to eq('United States')
         expect(activity.start_date_utc).to eq('2019-08-01T02:03:04')
         expect(activity.start_date_local).to eq('2019-07-31T20:21:22')
+        expect(activity.start_latlng).to eq('37.77,-122.43')
+        expect(activity.end_latlng).to eq('38.91,-123.45')
         expect(activity.raw_data).to eq(@raw_data)
         expect(activity.state).to eq('processed')
       end
