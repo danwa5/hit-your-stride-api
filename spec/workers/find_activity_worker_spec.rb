@@ -34,6 +34,8 @@ RSpec.describe FindActivityWorker do
           .and_call_original
 
         expect(CalculateLayoffWorker).to receive(:perform_async).once
+        expect(SplitDistanceCoordinatesWorker).to receive(:perform_async).with('100').once
+        expect(SplitDistanceCoordinatesWorker).to receive(:perform_async).with('102').once
 
         res = subject.perform
         expect(res).to eq(%w(100 102))

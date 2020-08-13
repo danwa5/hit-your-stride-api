@@ -23,7 +23,13 @@ class FindActivityWorker
       created << activity.uid
     end
 
-    CalculateLayoffWorker.perform_async if created.any?
+    if created.any?
+      CalculateLayoffWorker.perform_async
+
+      created.each do |uid|
+        SplitDistanceCoordinatesWorker.perform_async(uid)
+      end
+    end
 
     created
   end

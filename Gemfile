@@ -26,7 +26,8 @@ gem 'dry-initializer', '~>2.3'
 gem 'dry-monads', '~> 1.0'
 gem 'dry-transaction'
 gem 'fast_jsonapi'
-gem 'geocoder', ">= 1.6.1"
+gem 'fast-polylines'
+gem 'geocoder', "~> 1.6"
 gem 'httparty'
 gem 'pagy', '~> 3.5'
 gem 'rack-cors'

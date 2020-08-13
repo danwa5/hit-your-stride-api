@@ -108,6 +108,7 @@ GEM
       railties (>= 4.2.0)
     faker (2.8.0)
       i18n (>= 1.6, < 1.8)
+    fast-polylines (2.1.0)
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     ffi (1.11.3)
@@ -260,8 +261,9 @@ DEPENDENCIES
   dry-transaction
   factory_bot_rails
   faker
+  fast-polylines
   fast_jsonapi
-  geocoder (>= 1.6.1)
+  geocoder (~> 1.6)
   httparty
   listen (>= 3.0.5, < 3.2)
   pagy (~> 3.5)

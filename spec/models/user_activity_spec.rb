@@ -9,4 +9,11 @@ RSpec.describe UserActivity, type: :model do
     it { is_expected.to validate_presence_of(:uid) }
     it { is_expected.to validate_uniqueness_of(:uid).case_insensitive }
   end
+
+  describe '#polyline' do
+    example do
+      activity = create(:user_activity, raw_data: { 'map': { 'summary_polyline': 'abc' }})
+      expect(activity.polyline).to eq('abc')
+    end
+  end
 end

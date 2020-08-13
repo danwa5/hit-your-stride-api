@@ -15,4 +15,8 @@ class UserActivity < ApplicationRecord
       transition [:pending, :processing] => :failure
     end
   end
+
+  def polyline
+    raw_data.fetch('map', {}).fetch('summary_polyline', nil)
+  end
 end

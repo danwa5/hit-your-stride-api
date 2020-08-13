@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_01_063626) do
+ActiveRecord::Schema.define(version: 2020_08_13_072213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2020_08_01_063626) do
     t.integer "mile_pace"
     t.string "start_latlng"
     t.string "end_latlng"
+    t.json "split_distance_coordinates"
     t.index ["start_date_local"], name: "index_user_activities_on_start_date_local"
   end
 
