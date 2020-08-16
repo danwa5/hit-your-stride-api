@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_13_072213) do
+ActiveRecord::Schema.define(version: 2020_08_14_065758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "routes", force: :cascade do |t|
+    t.string "name"
+    t.integer "distance", null: false
+    t.string "start_latlng", null: false
+    t.string "end_latlng", null: false
+    t.string "city"
+    t.string "state_province"
+    t.string "country"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "user_activities", force: :cascade do |t|
     t.string "activity_type"
@@ -38,6 +50,7 @@ ActiveRecord::Schema.define(version: 2020_08_13_072213) do
     t.string "start_latlng"
     t.string "end_latlng"
     t.json "split_distance_coordinates"
+    t.integer "route_id"
     t.index ["start_date_local"], name: "index_user_activities_on_start_date_local"
   end
 
