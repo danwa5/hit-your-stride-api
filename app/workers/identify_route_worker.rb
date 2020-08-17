@@ -5,20 +5,20 @@ class IdentifyRouteWorker
     activity = UserActivity.find_by(uid: uid)
     return unless activity.present?
 
-    routes = Route.where(distance: (activity.distance-150)..(activity.distance+150))
+    routes = Route.where(distance: (activity.distance-200)..(activity.distance+200))
 
     if routes.any?
-      route_found = false
+      route_matched = false
 
       routes.each do |route|
         if within_proximity?(activity.start_latlng, route.start_latlng) && within_proximity?(activity.end_latlng, route.end_latlng)
           activity.update!(route: route)
-          route_found = true
+          route_matched = true
           break
         end
       end
 
-      create_route(activity) unless route_found
+      create_route(activity) unless route_matched
     else
       create_route(activity)
     end
@@ -28,7 +28,7 @@ class IdentifyRouteWorker
 
   def within_proximity?(run_coordinate, route_coordinate)
     distance = Geocoder::Calculations.distance_between(run_coordinate.split(','), route_coordinate.split(','), { units: :km })
-    distance <= 0.1
+    distance.round(1) <= 0.3
   end
 
   def create_route(activity)
