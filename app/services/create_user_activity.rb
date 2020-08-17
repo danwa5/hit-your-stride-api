@@ -90,11 +90,55 @@ class CreateUserActivity
   end
 
   def start_latlng
-    raw_data.fetch('start_latlng', []).join(',').presence
+    "#{start_latitude},#{start_longitude}"
+  end
+
+  # take the coordinate with the greater precision
+  def start_latitude
+    api_start_lat = raw_data.fetch('start_latlng', []).first
+    pl_start_lat = polyline_coordinates.first.first
+
+    coordinate_precision(pl_start_lat) > coordinate_precision(api_start_lat) ? pl_start_lat : api_start_lat
+  end
+
+  # take the coordinate with the greater precision
+  def start_longitude
+    api_start_lng = raw_data.fetch('start_latlng', []).last
+    pl_start_lng = polyline_coordinates.first.last
+
+    coordinate_precision(pl_start_lng) > coordinate_precision(api_start_lng) ? pl_start_lng : api_start_lng
   end
 
   def end_latlng
-    raw_data.fetch('end_latlng', []).join(',').presence
+    "#{end_latitude},#{end_longitude}"
+  end
+
+  # take the coordinate with the greater precision
+  def end_latitude
+    api_end_lat = raw_data.fetch('end_latlng', []).first
+    pl_end_lat = polyline_coordinates.last.first
+
+    coordinate_precision(pl_end_lat) > coordinate_precision(api_end_lat) ? pl_end_lat : api_end_lat
+  end
+
+  # take the coordinate with the greater precision
+  def end_longitude
+    api_end_lng = raw_data.fetch('end_latlng', []).last
+    pl_end_lng = polyline_coordinates.last.last
+
+    coordinate_precision(pl_end_lng) > coordinate_precision(api_end_lng) ? pl_end_lng : api_end_lng
+  end
+
+  def coordinate_precision(coordinate)
+    return 0 unless coordinate.present?
+    String(coordinate).split('.').last.size
+  end
+
+  def polyline_coordinates
+    @polyline_coordinates ||= begin
+      polyline = raw_data.fetch('map', {}).fetch('summary_polyline', nil)
+      FastPolylines.decode(polyline)
+    end
   end
 
   # geolocation-related

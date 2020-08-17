@@ -9,15 +9,18 @@ RSpec.describe CreateUserActivity do
     before do
       @uid = '12345678'
       @raw_data = {
-        "type" => "Run",
-        "id" => @uid.to_i,
-        "distance" => 10064.20,
-        "moving_time" => 2813,
-        "elapsed_time" => 1001,
-        "start_date" => "2019-08-01T02:03:04Z",
-        "start_date_local" => "2019-07-31T20:21:22Z",
-        "start_latlng" => [37.77,-122.43],
-        "end_latlng" => [38.91,-123.45]
+        'type' => 'Run',
+        'id' => @uid.to_i,
+        'distance' => 10064.20,
+        'moving_time' => 2813,
+        'elapsed_time' => 1001,
+        'start_date' => '2019-08-01T02:03:04Z',
+        'start_date_local' => '2019-07-31T20:21:22Z',
+        'start_latlng' => [37.77,-122.43],
+        'end_latlng' => [38.91,-123.45],
+        'map' => {
+          'summary_polyline' => 'POLYLINE'
+        }
       }
       @geocoded = double(Geocoder::Result, data: {
         'address' => {
@@ -26,6 +29,8 @@ RSpec.describe CreateUserActivity do
           'country' => 'United States'
         }
       })
+
+      allow(FastPolylines).to receive(:decode).and_return([[37.77,-122.43],[38.91,-123.45]])
     end
 
     context 'when activity has been processed' do
