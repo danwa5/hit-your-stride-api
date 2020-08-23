@@ -19,6 +19,6 @@ class UserActivity < ApplicationRecord
   end
 
   def polyline
-    raw_data.fetch('map', {}).fetch('summary_polyline', nil)
+    raw_data&.fetch('map', {})&.fetch('summary_polyline', nil)
   end
 end

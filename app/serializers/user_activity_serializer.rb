@@ -9,6 +9,10 @@ class UserActivitySerializer
   end
 
   attribute :polyline do |object|
-    object.raw_data.fetch('map', {}).fetch('summary_polyline', nil)
+    object.raw_data&.fetch('map', {})&.fetch('summary_polyline', nil)
+  end
+
+  attribute :split_distance_coordinates do |object|
+    object.split_distance_coordinates&.fetch('coordinates', nil)
   end
 end
