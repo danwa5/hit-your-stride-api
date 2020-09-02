@@ -63,6 +63,8 @@ RSpec.describe IdentifyRouteWorker do
         allow(Geocoder::Calculations).to receive(:distance_between).and_return(0.3)
       end
       it 'matches activity with route' do
+        expect(RouteRankWorker).to receive(:perform_async).with(@route.id).once
+
         expect {
           subject.perform('123')
         }.not_to change(Route, :count)

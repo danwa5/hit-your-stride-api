@@ -14,6 +14,7 @@ class IdentifyRouteWorker
         if within_proximity?(activity.start_latlng, route.start_latlng) && within_proximity?(activity.end_latlng, route.end_latlng)
           activity.update!(route: route)
           route_matched = true
+          RouteRankWorker.perform_async(route.id)
           break
         end
       end
