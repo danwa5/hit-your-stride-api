@@ -15,4 +15,8 @@ class UserActivitySerializer
   attribute :split_distance_coordinates do |object|
     object.split_distance_coordinates&.fetch('coordinates', nil)
   end
+
+  attribute :route_activity_count do |object|
+    object.route&.user_activities_count
+  end
 end

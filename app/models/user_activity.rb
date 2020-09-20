@@ -2,7 +2,7 @@ class UserActivity < ApplicationRecord
   validates :activity_type, inclusion: { in: %w(run), if: proc { |o| o.activity_type.present? } }
   validates :uid, presence: true, uniqueness: true, case_sensitive: false
 
-  belongs_to :route, optional: true
+  belongs_to :route, optional: true, counter_cache: true
 
   state_machine :initial => :pending do
     event :processing do
