@@ -17,6 +17,46 @@ $ gem install bundler
 $ bundle check || bundle install
 ```
 
+### Usages
+
+Retrieve runs with the following optional filter parameters:
+- `city`
+- `country`
+- `distance_max`
+- `distance_min`
+- `duration_max`
+- `duration_min`
+- `layoff_max`
+- `layoff_min`
+- `mile_pace`
+
+```shell
+curl 'http://localhost:3000/api/v1/activities' \
+  -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+```
+
+Retrieve fastest runs for a route
+
+```shell
+curl 'http://localhost:3000/graphql' \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "{ fastestRunsForRoute(routeId: ROUTE-ID) { routeRank startDateLocal movingTime distance milePace } }"
+  }'
+```
+
+Retrieve all past run locations
+
+```shell
+curl 'http://localhost:3000/api/v1/locations' \
+  -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+```
+
 ### Configuration
 
 To get Strava access token, run `ruby bin/strava_oauth_token` and then copy and paste the token in the `.env`.
