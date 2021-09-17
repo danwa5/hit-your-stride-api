@@ -3,7 +3,6 @@ require 'state_codes'
 class CreateUserActivity
   include StateCodes
   include Services::BaseService
-  extend Dry::Initializer
 
   option :uid
   option :raw_data

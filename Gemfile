@@ -20,8 +20,8 @@ gem 'puma'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'dotenv-rails'
-gem 'dry-initializer', '~>2.3'
-gem 'dry-monads', '~> 1.0'
+gem 'dry-initializer'
+gem 'dry-monads', '~> 1.4.0'
 gem 'dry-transaction'
 gem 'fast_jsonapi'
 gem 'fast-polylines'

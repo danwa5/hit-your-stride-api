@@ -1,4 +1,3 @@
-require 'dry/matcher/either_matcher'
 require 'dry/monads/try'
 
 module Services
@@ -35,11 +34,11 @@ module Services
   #
   module BaseService
     def self.included(target)
-      target.send(:include, Dry::Matcher.for(:call, with: Dry::Matcher::EitherMatcher))
-      # target.send(:include, Dry::Monads::Either::Mixin)
+      # target.send(:include, Dry::Matcher.for(:call, with: Dry::Matcher::ResultMatcher))
       target.send(:include, Dry::Monads::Try::Mixin)
       target.send(:include, InstanceMethods)
       target.extend ClassMethods
+      target.extend Dry::Initializer
     end
 
     module InstanceMethods
