@@ -30,7 +30,7 @@ gem 'graphql', '~> 1.9.21'
 gem 'httparty'
 gem 'pagy', '~> 3.5'
 gem 'rack-cors'
-gem 'sidekiq', '~> 5.2'
+gem 'sidekiq', '~> 6.4'
 gem 'state_machines-activerecord'
 
 group :development, :test do
