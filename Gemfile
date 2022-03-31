@@ -6,7 +6,7 @@ gem 'rails', '~> 6.0.3'
 
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
-gem 'puma'
+gem 'puma', '~> 5.6'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
@@ -17,8 +17,6 @@ gem 'puma'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.2', require: false
 gem 'dotenv-rails'
 gem 'dry-initializer'
 gem 'dry-monads', '~> 1.4.0'

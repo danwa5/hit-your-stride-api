@@ -59,7 +59,20 @@ curl 'http://localhost:3000/api/v1/locations' \
 
 ### Configuration
 
-To get Strava access token, run `ruby bin/strava_oauth_token` and then copy and paste the token in the `.env`.
+1. Start rails server
+
+2. Run `ruby bin/strava_oauth_token` and then copy the `code` value from the URL to use in the next step
+
+3. Make a request for your access token:
+```
+curl -X POST https://www.strava.com/api/v3/oauth/token \
+  -d client_id=<ReplaceWithClientID> \
+  -d client_secret=<ReplaceWithClientSecret> \
+  -d code=<ReplaceWithCode> \
+  -d grant_type=authorization_code
+```
+
+4. Update the access token in your .env
 
 ### Deploy
 
